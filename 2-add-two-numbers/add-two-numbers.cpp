@@ -1,28 +1,34 @@
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        ListNode* dummyHead = new ListNode(0);
-        ListNode* tail = dummyHead;
-        int carry = 0;
-
-        while (l1 != nullptr || l2 != nullptr || carry != 0) {
-            int digit1 = (l1 != nullptr) ? l1->val : 0;
-            int digit2 = (l2 != nullptr) ? l2->val : 0;
-
-            int sum = digit1 + digit2 + carry;
-            int digit = sum % 10;
-            carry = sum / 10;
-
-            ListNode* newNode = new ListNode(digit);
-            tail->next = newNode;
-            tail = tail->next;
-
-            l1 = (l1 != nullptr) ? l1->next : nullptr;
-            l2 = (l2 != nullptr) ? l2->next : nullptr;
+        ListNode* head=new ListNode(-1);
+        ListNode* dummyNode=head;
+        int carry=0;
+        while(l1!=NULL || l2!=NULL){
+            int val=0;
+            if(l1!=NULL){
+                val+=l1->val;
+                l1=l1->next;
+            }
+            if(l2!=NULL){
+                val+=l2->val;
+                l2=l2->next;
+            }
+            val+=carry;
+            if(val>=10){
+                carry=1;
+                val=val-10;
+            }
+            else carry=0;
+            ListNode* newnode=new ListNode(val);
+            dummyNode->next=newnode;
+            dummyNode=newnode;
         }
-
-        ListNode* result = dummyHead->next;
-        delete dummyHead;
-        return result;
+        if(carry==1){
+            ListNode* newnode=new ListNode(carry);
+            dummyNode->next=newnode;
+            dummyNode=newnode;
+        }
+        return head->next;
     }
 };
